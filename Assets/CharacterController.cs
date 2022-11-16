@@ -5,7 +5,7 @@ using UnityEngine;
  
 public class CharacterController : MonoBehaviour
 {
-    public float maxSpeed = 0.5f;
+    public float maxSpeed = 1.0f;
     float rotation = 0.0f;
     float camRotation = 0.0f;
     float rotationSpeed = 2.0f;
@@ -65,26 +65,6 @@ public class CharacterController : MonoBehaviour
 
     //Wall Hang
 
-        // 1 - Detect
-        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 1.1f, wallLayer);
-
-        // IF THEY CHOOSE TO HOLD CTRL
-        if (isOnWall == true && Input.GetKey(KeyCode.LeftControl))
-           {
-            myRigidbody.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezePositionY & RigidbodyConstraints.FreezePositionZ;
-        }
-        else if (isOnWall && Input.GetKeyDown(KeyCode.Space))
-        {
-            myRigidbody.constraints = RigidbodyConstraints.None;
-
-            myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
-        }
-        else if (isOnWall == true || isOnWall == false)
-        {
-            myRigidbody.constraints = RigidbodyConstraints.None;
-        }
-        
-
     //Movement
         //transform.position = transform.position + (transform.forward * Input.GetAxis("Vertical") * maxSpeed);
         Vector3 newVelocity = transform.forward * Input.GetAxis("Vertical") * maxSpeed;
@@ -100,6 +80,31 @@ public class CharacterController : MonoBehaviour
         camRotation = Mathf.Clamp(camRotation, -40.0f, 40.0f);
 
         camLock.transform.localRotation = Quaternion.Euler(new Vector3(-camRotation, 0.0f, 0.0f));
+
+
+                // 1 - Detect
+        
+
+        // IF THEY CHOOSE TO HOLD CTRL
+       
+       //Wall Hang V2
+       isOnWall = Physics.CheckSphere(wallChecker.transform.position, 1.0001f, wallLayer);
+
+        if (isOnWall && Input.GetKeyDown(KeyCode.Space))
+        {
+            myRigidbody.constraints = RigidbodyConstraints.None;
+
+            myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+        }
+        else if (isOnWall && Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.Space))
+        {
+            myRigidbody.velocity = Vector3.zero;
+            //myRigidbody.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezePositionY & RigidbodyConstraints.FreezePositionZ;
+        }
+        else if (isOnWall == false)
+        {
+            myRigidbody.constraints = RigidbodyConstraints.None;
+        }
        
     }
 }
