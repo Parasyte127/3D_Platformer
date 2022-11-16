@@ -64,14 +64,14 @@ public class CharacterController : MonoBehaviour
         }
 
     //Wall Hang
-        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 30.0f, wallLayer);
+        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 3.0f, wallLayer);
 
         
 
-        if (isOnWall == true && Input.GetKeyDown(KeyCode.Space) && Input.GetKeyDown(KeyCode.W))
+        if (isOnWall == true && Input.GetKeyDown(KeyCode.Space) && Input.GetKeyDown(KeyCode.W) && doubleJump == false)
         {
             myRigidbody.AddForce(transform.up * jumpForce);
-            myRigidbody.AddForce(transform.forward * jumpForce);
+            myRigidbody.AddForce(transform.forward * jumpForce);   
         }
 
     //Movement
