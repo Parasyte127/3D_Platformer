@@ -38,13 +38,13 @@ public class CharacterController : MonoBehaviour
     //Jump
         isOnGround = Physics.CheckSphere(groundChecker.transform.position, 0.1f, groundLayer);
  
-        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space))
+        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
             myRigidbody.AddForce(transform.up * jumpForce);
         }
  
     //Double Jump
-        if (isOnGround == false && doubleJump == true && Input.GetKeyDown(KeyCode.Space))
+        if (isOnGround == false && doubleJump == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
             myRigidbody.AddForce(transform.up * jumpForce);
             doubleJump = false;
@@ -57,22 +57,33 @@ public class CharacterController : MonoBehaviour
     //Run
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            maxSpeed = 7.5f;
+            maxSpeed = 8.5f;
         }else  
         {
             maxSpeed = 5.0f;
         }
 
     //Wall Hang
-        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 3.0f, wallLayer);
 
-        
+        // 1 - Detect
+        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 1.1f, wallLayer);
 
-        if (isOnWall == true && Input.GetKeyDown(KeyCode.Space) && Input.GetKeyDown(KeyCode.W) && doubleJump == false)
-        {
-            myRigidbody.AddForce(transform.up * jumpForce);
-            myRigidbody.AddForce(transform.forward * jumpForce);   
+        // IF THEY CHOOSE TO HOLD CTRL
+        if (isOnWall == true && Input.GetKey(KeyCode.LeftControl))
+           {
+            myRigidbody.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezePositionY & RigidbodyConstraints.FreezePositionZ;
         }
+        else if (isOnWall && Input.GetKeyDown(KeyCode.Space))
+        {
+            myRigidbody.constraints = RigidbodyConstraints.None;
+
+            myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+        }
+        else if (isOnWall == true || isOnWall == false)
+        {
+            myRigidbody.constraints = RigidbodyConstraints.None;
+        }
+        
 
     //Movement
         //transform.position = transform.position + (transform.forward * Input.GetAxis("Vertical") * maxSpeed);
