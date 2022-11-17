@@ -22,7 +22,10 @@ public class CharacterController : MonoBehaviour
     bool isOnWall;
     public GameObject wallChecker;
     public LayerMask wallLayer;
- 
+    public float maxJumpTime = 1.5f;
+    public bool canAttach;
+
+
     Rigidbody myRigidbody;
    
     void Start()
@@ -55,7 +58,7 @@ public class CharacterController : MonoBehaviour
             doubleJump = true;
         }
     //Run
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && ! Input.GetKey(KeyCode.S))
         {
             maxSpeed = 8.5f;
         }else  
@@ -67,8 +70,9 @@ public class CharacterController : MonoBehaviour
 
     //Movement
         //transform.position = transform.position + (transform.forward * Input.GetAxis("Vertical") * maxSpeed);
-        Vector3 newVelocity = transform.forward * Input.GetAxis("Vertical") * maxSpeed;
+        Vector3 newVelocity = transform.forward * Input.GetAxis("Vertical") * maxSpeed + transform.right * Input.GetAxis("Horizontal") * maxSpeed;
         myRigidbody.velocity = new Vector3(newVelocity.x, myRigidbody.velocity.y, newVelocity.z);
+        
 
     //Rotation
         rotation = rotation + Input.GetAxis("Mouse X") * rotationSpeed;
@@ -88,17 +92,19 @@ public class CharacterController : MonoBehaviour
         // IF THEY CHOOSE TO HOLD CTRL
        
        //Wall Hang V2
-       isOnWall = Physics.CheckSphere(wallChecker.transform.position, 1.0001f, wallLayer);
+       isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.5f, wallLayer);
+        
 
         if (isOnWall && Input.GetKeyDown(KeyCode.Space))
         {
             myRigidbody.constraints = RigidbodyConstraints.None;
-
             myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+
         }
         else if (isOnWall && Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.Space))
         {
-            myRigidbody.velocity = Vector3.zero;
+            myRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            //myRigidbody.velocity = Vector3.zero;
             //myRigidbody.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezePositionY & RigidbodyConstraints.FreezePositionZ;
         }
         else if (isOnWall == false)
