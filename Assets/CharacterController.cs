@@ -84,12 +84,6 @@ public class CharacterController : MonoBehaviour
         camRotation = Mathf.Clamp(camRotation, -40.0f, 40.0f);
 
         camLock.transform.localRotation = Quaternion.Euler(new Vector3(-camRotation, 0.0f, 0.0f));
-
-
-                // 1 - Detect
-        
-
-        // IF THEY CHOOSE TO HOLD CTRL
        
        //Wall Hang V2
        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.5f, wallLayer);
