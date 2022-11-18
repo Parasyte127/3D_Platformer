@@ -5,7 +5,7 @@ using UnityEngine;
  
 public class CharacterController : MonoBehaviour
 {
-    public float maxSpeed = 0.5f;
+    public float maxSpeed = 1.0f;
     float rotation = 0.0f;
     float camRotation = 0.0f;
     float rotationSpeed = 2.0f;
@@ -22,7 +22,10 @@ public class CharacterController : MonoBehaviour
     bool isOnWall;
     public GameObject wallChecker;
     public LayerMask wallLayer;
- 
+    public float maxJumpTime = 1.5f;
+    public bool canAttach;
+
+
     Rigidbody myRigidbody;
    
     void Start()
@@ -38,13 +41,13 @@ public class CharacterController : MonoBehaviour
     //Jump
         isOnGround = Physics.CheckSphere(groundChecker.transform.position, 0.1f, groundLayer);
  
-        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space))
+        if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
             myRigidbody.AddForce(transform.up * jumpForce);
         }
  
     //Double Jump
-        if (isOnGround == false && doubleJump == true && Input.GetKeyDown(KeyCode.Space))
+        if (isOnGround == false && doubleJump == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
             myRigidbody.AddForce(transform.up * jumpForce);
             doubleJump = false;
@@ -55,29 +58,21 @@ public class CharacterController : MonoBehaviour
             doubleJump = true;
         }
     //Run
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && ! Input.GetKey(KeyCode.S))
         {
-            maxSpeed = 7.5f;
+            maxSpeed = 8.5f;
         }else  
         {
             maxSpeed = 5.0f;
         }
 
     //Wall Hang
-        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 30.0f, wallLayer);
-
-        
-
-        if (isOnWall == true && Input.GetKeyDown(KeyCode.Space) && Input.GetKeyDown(KeyCode.W))
-        {
-            myRigidbody.AddForce(transform.up * jumpForce);
-            myRigidbody.AddForce(transform.forward * jumpForce);
-        }
 
     //Movement
         //transform.position = transform.position + (transform.forward * Input.GetAxis("Vertical") * maxSpeed);
-        Vector3 newVelocity = transform.forward * Input.GetAxis("Vertical") * maxSpeed;
+        Vector3 newVelocity = transform.forward * Input.GetAxis("Vertical") * maxSpeed + transform.right * Input.GetAxis("Horizontal") * maxSpeed;
         myRigidbody.velocity = new Vector3(newVelocity.x, myRigidbody.velocity.y, newVelocity.z);
+        
 
     //Rotation
         rotation = rotation + Input.GetAxis("Mouse X") * rotationSpeed;
@@ -89,6 +84,33 @@ public class CharacterController : MonoBehaviour
         camRotation = Mathf.Clamp(camRotation, -40.0f, 40.0f);
 
         camLock.transform.localRotation = Quaternion.Euler(new Vector3(-camRotation, 0.0f, 0.0f));
+
+
+                // 1 - Detect
+        
+
+        // IF THEY CHOOSE TO HOLD CTRL
+       
+       //Wall Hang V2
+       isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.5f, wallLayer);
+        
+
+        if (isOnWall && Input.GetKeyDown(KeyCode.Space))
+        {
+            myRigidbody.constraints = RigidbodyConstraints.None;
+            myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+
+        }
+        else if (isOnWall && Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.Space))
+        {
+            myRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            //myRigidbody.velocity = Vector3.zero;
+            //myRigidbody.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezePositionY & RigidbodyConstraints.FreezePositionZ;
+        }
+        else if (isOnWall == false)
+        {
+            myRigidbody.constraints = RigidbodyConstraints.None;
+        }
        
     }
 }
