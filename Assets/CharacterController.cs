@@ -25,11 +25,14 @@ public class CharacterController : MonoBehaviour
     public float maxJumpTime = 1.5f;
     public bool canAttach;
 
+    Animator myAnim;
 
     Rigidbody myRigidbody;
    
     void Start()
     {
+        myAnim = GetComponentInChildren<Animator>();
+
         Cursor.lockState = CursorLockMode.Locked;
         camLock = GameObject.Find("CamLock");
         myRigidbody = GetComponent<Rigidbody>();
@@ -38,11 +41,14 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
     //Jump
         isOnGround = Physics.CheckSphere(groundChecker.transform.position, 0.1f, groundLayer);
+        myAnim.SetBool("isOnGround", isOnGround);
  
         if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
+            myAnim.SetTrigger("jumped");
             myRigidbody.AddForce(transform.up * jumpForce);
         }
  
@@ -66,15 +72,17 @@ public class CharacterController : MonoBehaviour
             maxSpeed = 5.0f;
         }
 
-    //Wall Hang
+    //Wall Hang (Fail)
 
     //Movement
         //transform.position = transform.position + (transform.forward * Input.GetAxis("Vertical") * maxSpeed);
         Vector3 newVelocity = transform.forward * Input.GetAxis("Vertical") * maxSpeed + transform.right * Input.GetAxis("Horizontal") * maxSpeed;
         myRigidbody.velocity = new Vector3(newVelocity.x, myRigidbody.velocity.y, newVelocity.z);
-        
 
-    //Rotation
+        myAnim.SetFloat("speed", newVelocity.magnitude);
+
+
+        //Rotation
         rotation = rotation + Input.GetAxis("Mouse X") * rotationSpeed;
         transform.rotation = Quaternion.Euler(new Vector3(0.0f, rotation, 0.0f));
  
@@ -86,7 +94,7 @@ public class CharacterController : MonoBehaviour
         camLock.transform.localRotation = Quaternion.Euler(new Vector3(-camRotation, 0.0f, 0.0f));
        
        //Wall Hang V2
-       isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.5f, wallLayer);
+       isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.6f, wallLayer);
         
 
         if (isOnWall && Input.GetKeyDown(KeyCode.Space))
