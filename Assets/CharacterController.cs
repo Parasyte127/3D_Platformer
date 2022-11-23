@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
  
         if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
-            myAnim.SetTrigger("jumped");
+            myAnim.SetTrigger("Jumped");
             myRigidbody.AddForce(transform.up * jumpForce);
         }
  
