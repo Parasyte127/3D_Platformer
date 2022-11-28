@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -154,7 +154,7 @@ MonoBehaviour:
     value: 2
   saturation:
     overrideState: 1
-    value: 40
+    value: 30
   brightness:
     overrideState: 1
     value: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     value: 100
   mixerRedOutGreenIn:
     overrideState: 1
-    value: 0
+    value: -2
   mixerRedOutBlueIn:
     overrideState: 1
     value: 0
@@ -1421,7 +1421,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.38
+    value: 0.83
   color:
     overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
@@ -1439,7 +1439,7 @@ MonoBehaviour:
     value: -12
   thicknessModifier:
     overrideState: 1
-    value: 10
+    value: 1.8
   directLightingStrength:
     overrideState: 1
     value: 0
