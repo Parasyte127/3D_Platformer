@@ -4,7 +4,14 @@ using UnityEngine;
  
  
 public class CharacterController : MonoBehaviour
-{
+{   
+    public GameObject cam1;
+    public GameObject cam2;
+    bool usingBox = false;
+    bool atBox;
+    public GameObject boxChecker;
+    public LayerMask boxLayer;
+
     public float maxSpeed = 1.0f;
     float rotation = 0.0f;
     float camRotation = 0.0f;
@@ -16,7 +23,6 @@ public class CharacterController : MonoBehaviour
     public GameObject groundChecker;
     public LayerMask groundLayer;
     public float jumpForce = 300.0f;
- 
     bool doubleJump = true;
 
     bool isOnWall;
@@ -31,6 +37,9 @@ public class CharacterController : MonoBehaviour
    
     void Start()
     {
+        cam1.SetActive(true);
+        cam2.SetActive(false);
+
         myAnim = GetComponentInChildren<Animator>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -89,11 +98,11 @@ public class CharacterController : MonoBehaviour
     //Camera Rotation
         camRotation = camRotation + Input.GetAxis("Mouse Y") * camRotationSpeed;
 
-        camRotation = Mathf.Clamp(camRotation, -40.0f, 40.0f);
+        camRotation = Mathf.Clamp(camRotation, -80.0f, 60.0f);
 
         camLock.transform.localRotation = Quaternion.Euler(new Vector3(-camRotation, 0.0f, 0.0f));
        
-       //Wall Hang V2
+    //Wall Hang V2
        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.6f, wallLayer);
         
 
@@ -113,7 +122,29 @@ public class CharacterController : MonoBehaviour
         {
             myRigidbody.constraints = RigidbodyConstraints.None;
         }
-       
+
+     //cam use
+
+        atBox = Physics.CheckSphere(wallChecker.transform.position, 2.0f, boxLayer);
+
+        
+
+        //Switch to complaint
+        if (Input.GetKeyDown(KeyCode.P) && atBox == true && usingBox == false)
+        {
+            cam1.SetActive(false);
+            cam2.SetActive(true);
+            usingBox = true;
+            Debug.Log("At Box");
+        }
+    //Switch back to tird-person
+            if (Input.GetKeyDown(KeyCode.P) && usingBox == true)
+            {
+                cam1.SetActive(true);
+                cam2.SetActive(false);
+                usingBox = false;
+            Debug.Log("Not At Box");
+        }
     }
 }
  
