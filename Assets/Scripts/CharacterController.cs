@@ -125,7 +125,7 @@ public class CharacterController : MonoBehaviour
 
      //cam use
 
-        atBox = Physics.CheckSphere(wallChecker.transform.position, 2.0f, boxLayer);
+        atBox = Physics.CheckSphere(boxChecker.transform.position, 2.0f, boxLayer);
 
         
 
@@ -138,11 +138,11 @@ public class CharacterController : MonoBehaviour
             Debug.Log("At Box");
         }
     //Switch back to tird-person
-            if (Input.GetKeyDown(KeyCode.P) && usingBox == true)
-            {
-                cam1.SetActive(true);
-                cam2.SetActive(false);
-                usingBox = false;
+        else if (Input.GetKeyDown(KeyCode.P) && usingBox == true)
+        {
+            cam1.SetActive(true);
+            cam2.SetActive(false);
+            usingBox = false;
             Debug.Log("Not At Box");
         }
     }
