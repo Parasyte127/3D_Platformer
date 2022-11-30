@@ -13,6 +13,7 @@ public class CharacterController : MonoBehaviour
     public LayerMask boxLayer;
 
     public float maxSpeed = 1.0f;
+    public float runSpeed = 10.0f;
     float rotation = 0.0f;
     float camRotation = 0.0f;
     float rotationSpeed = 2.0f;
@@ -30,6 +31,7 @@ public class CharacterController : MonoBehaviour
     public LayerMask wallLayer;
     public float maxJumpTime = 1.5f;
     public bool canAttach;
+    bool hanging;
 
     Animator myAnim;
 
@@ -62,20 +64,20 @@ public class CharacterController : MonoBehaviour
         }
  
     //Double Jump
-        if (isOnGround == false && doubleJump == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
-        {
-            myRigidbody.AddForce(transform.up * jumpForce);
-            doubleJump = false;
-        }
+        //if (isOnGround == false && doubleJump == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
+        //{
+            //myRigidbody.AddForce(transform.up * jumpForce);
+            //doubleJump = false;
+        //}
  
-        if (isOnGround == true)
-        {
-            doubleJump = true;
-        }
+        //if (isOnGround == true)
+        //{
+            //doubleJump = true;
+        //}
     //Run
         if (Input.GetKey(KeyCode.LeftShift) && ! Input.GetKey(KeyCode.S))
         {
-            maxSpeed = 8.5f;
+            maxSpeed = runSpeed;
         }else  
         {
             maxSpeed = 5.0f;
@@ -106,15 +108,16 @@ public class CharacterController : MonoBehaviour
        isOnWall = Physics.CheckSphere(wallChecker.transform.position, 0.6f, wallLayer);
         
 
-        if (isOnWall && Input.GetKeyDown(KeyCode.Space))
+        if (isOnWall && Input.GetKeyDown(KeyCode.Space) && hanging == true)
         {
             myRigidbody.constraints = RigidbodyConstraints.None;
             myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
-
+            hanging = false;
         }
         else if (isOnWall && Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.Space))
         {
             myRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            hanging = true;
             //myRigidbody.velocity = Vector3.zero;
             //myRigidbody.constraints = RigidbodyConstraints.FreezePositionX & RigidbodyConstraints.FreezePositionY & RigidbodyConstraints.FreezePositionZ;
         }
@@ -130,20 +133,18 @@ public class CharacterController : MonoBehaviour
         
 
         //Switch to complaint
-        if (Input.GetKeyDown(KeyCode.P) && atBox == true && usingBox == false)
+        if (Input.GetKeyDown(KeyCode.E) && atBox == true && usingBox == false)
         {
             cam1.SetActive(false);
             cam2.SetActive(true);
             usingBox = true;
-            Debug.Log("At Box");
         }
-    //Switch back to tird-person
-        else if (Input.GetKeyDown(KeyCode.P) && usingBox == true)
+    //Switch back to third-person
+        else if (Input.GetKeyDown(KeyCode.E) && usingBox == true)
         {
             cam1.SetActive(true);
             cam2.SetActive(false);
             usingBox = false;
-            Debug.Log("Not At Box");
         }
     }
 }
