@@ -8,7 +8,7 @@ public class LevelCompletion : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(3);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(2);
         }
     }
 

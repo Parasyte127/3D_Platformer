@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Over.unity
     guid: 395b622048cc53541a6249c7f3a997ac
+  - enabled: 1
+    path: Assets/Scenes/DurabilityTest.unity
+    guid: 0b64aaa2a2a98714693bcff6aa6e680b
   m_configObjects: {}
