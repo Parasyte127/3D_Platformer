@@ -26,7 +26,7 @@ public class MovingPlatform2 : MonoBehaviour
 
         if (orbExists == false)
         {
-            myPlatform.position = Vector3.MoveTowards(myPlatform.position, myEndPoint.position, speed);
+            myPlatform.position = Vector3.MoveTowards(myPlatform.position, myEndPoint.position, speed * Time.deltaTime);
         }
     }
 }

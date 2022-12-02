@@ -22,7 +22,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (isReversing == false)
         {
-            myPlatform.position = Vector3.MoveTowards(myPlatform.position, myEndPoint.position, speed);
+            myPlatform.position = Vector3.MoveTowards(myPlatform.position, myEndPoint.position, speed * Time.deltaTime);
 
             if(myPlatform.position == myEndPoint.position)
             {
@@ -30,7 +30,7 @@ public class MovingPlatform : MonoBehaviour
             }
         }else
         {
-            myPlatform.position = Vector3.MoveTowards(myPlatform.position, myStartPoint.position, speed);
+            myPlatform.position = Vector3.MoveTowards(myPlatform.position, myStartPoint.position, speed * Time.deltaTime);
 
             if(myPlatform.position == myStartPoint.position)
             {

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DurabilityTest.unity
     guid: 0b64aaa2a2a98714693bcff6aa6e680b
+  - enabled: 1
+    path: Assets/Scenes/LevelFinish.unity
+    guid: 7cca5a2296ea0124698c82b12d9e2e3f
   m_configObjects: {}
