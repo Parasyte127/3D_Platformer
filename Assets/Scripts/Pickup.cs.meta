@@ -3,7 +3,9 @@ guid: 63e41875e87140044897b739883ae0ea
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - glitch: {fileID: 8300000, guid: 00230474ce2012e4eba9826f4643eb92, type: 3}
+  - sfxPlayer: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

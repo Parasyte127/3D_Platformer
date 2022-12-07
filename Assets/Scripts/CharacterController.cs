@@ -5,6 +5,13 @@ using UnityEngine;
  
 public class CharacterController : MonoBehaviour
 {   
+    public AudioClip jump;
+    public AudioClip run;
+    public AudioClip backgroundMusic;
+
+    public AudioSource sfxPlayer;
+    public AudioSource musicPlayer;
+
     public GameObject cam1;
     public GameObject cam2;
     bool usingBox = false;
@@ -47,6 +54,10 @@ public class CharacterController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         camLock = GameObject.Find("CamLock");
         myRigidbody = GetComponent<Rigidbody>();
+
+        musicPlayer.clip = backgroundMusic;
+        musicPlayer.loop = true;
+        musicPlayer.Play();
     }
  
     // Update is called once per frame
@@ -59,6 +70,7 @@ public class CharacterController : MonoBehaviour
  
         if (isOnGround == true && Input.GetKeyDown(KeyCode.Space) && isOnWall == false)
         {
+            sfxPlayer.PlayOneShot(jump);
             myAnim.SetTrigger("Jumped");
             myRigidbody.AddForce(transform.up * jumpForce);
         }
@@ -113,6 +125,7 @@ public class CharacterController : MonoBehaviour
             myRigidbody.constraints = RigidbodyConstraints.None;
             myRigidbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
             hanging = false;
+            sfxPlayer.PlayOneShot(jump);
         }
         else if (isOnWall && Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.Space))
         {
@@ -139,13 +152,16 @@ public class CharacterController : MonoBehaviour
             cam2.SetActive(true);
             usingBox = true;
         }
-    //Switch back to third-person
+        //Switch back to third-person
         else if (Input.GetKeyDown(KeyCode.E) && usingBox == true)
         {
             cam1.SetActive(true);
             cam2.SetActive(false);
             usingBox = false;
         }
+
+        //Audio
+        
     }
 }
  
